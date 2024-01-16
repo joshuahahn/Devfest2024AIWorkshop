@@ -19,6 +19,7 @@
             - Determining weights for weighted distance
         - Profile-based movie recommendation systems
             - How can we build a system that recommends movies to a user's spectrum of interests?
+        - How can we use information like cast, director, or composer?
 
 2. What makes a program "intelligent"?
     - Adaptability
