@@ -8,17 +8,17 @@ from numpy import random as nprandom
 import movie
 
 # Global genre list
-GENRES = ["Action", "Romance", "Mystery", "Comedy", "Horror", "Crime", "Thriller"]
+GENRES = ["Action", "Romance", "Mystery", "Comedy", "Horror", "Crime", "Thriller", "Romcom"]
 VEC_LENGTH = len(GENRES)
 
 # Global attribute list
-ATTRIBUTES = ["Amazing", "Awesome", "Boring", "Cool", ]
+ATTRIBUTES = ["Amazing", "Awesome", "Boring", "Cool", "Fun", "Exciting", "Heartwrenching"]
 
 # Global movie name list
-TYPE = ["Movie", "Indie Film", "Film", "Animation", "Live-action Film"]
+TYPE = ["Movie", "Indie Film", "Film", "Animation", "Live-action Film", "Show", "Biopic"]
 
 
-def generate_movie():
+def generate_movie(seen=False):
     """
     Generates a movie object with randomly generated attributes.
     One movie is selected as the 'primary genre' with a normal 
@@ -27,7 +27,11 @@ def generate_movie():
     Every other genre gets some small noise.
     """
 
-    primary_genre = random.randint(0,VEC_LENGTH-1)
+    if seen:
+        primary_genre = 0
+    else:
+        primary_genre = random.randint(0,VEC_LENGTH-1)
+
     secondary_genre = random.randint(0,VEC_LENGTH-1)
     if secondary_genre == primary_genre:
         secondary_genre = (secondary_genre + random.randint(1, VEC_LENGTH-1)) % VEC_LENGTH
@@ -48,10 +52,21 @@ def generate_movie():
 
     return (title, vector)
 
-def generate_dataset(n=100):
+def generate_dataset(n=1000):
     file = open('dataset.txt', 'w')
     for _ in range(n):
         title, vector = generate_movie()
+        curr_line = [title] + vector
+        for i in range(1, len(curr_line)):
+            curr_line[i] = str(curr_line[i])
+        file.write(','.join(curr_line))
+        file.write('\n')
+    file.close()
+
+    file = open('seenmovies.txt', 'w')
+    for _ in range(20):
+        # Let's simulate someone who likes action movies. 
+        title, vector = generate_movie(seen=True)
         curr_line = [title] + vector
         for i in range(1, len(curr_line)):
             curr_line[i] = str(curr_line[i])
